@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+{% load staticfiles %}
+<html>
+<head><title>CodeTable</title>
+<link rel="stylesheet" href="{% static "css/bootstrap.min.css" %}">
+{{ form.media }}
+</head>
+<style>
+  body {
+    margin-top:20px;
+  }
+</style>
+<nav class="navbar navbar-inverse navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="/">Code Table</a>
+        </div>
+        <div id="navbar" class="collapse navbar-collapse">
+          <ul class="nav navbar-nav">
+            <li class="active"><a href="/">Home</a></li>
+            <li><a href="#">HackerEarth API</a></li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </nav>
+<body>
+<div class="container">
+  <div class="row">
+    <form method="post" class="post_form">{% csrf_token %}
+      <div class="col-md-8">
+        {{ form.text }}
+      </div>
+      <div class="col-md-4">
+          {{ form.name }}<br>
+          <hr>
+          {{ form.langs }}
+          <button id="cnr" type="submit" class="btn btn-default">Compile and Run</button>
+          <p>Input:</p>
+          {{ form.inp }}
+          <br>
+          <a href="/" class="btn btn-primary">Try a new Code</a>
+      </div>
+    </form>
+  </div>
+  <div class="row">
+      <div class="col-md-8 col-md-offset-2">
+            {% if out.status == "CE" %}
+                  <p>COMPILATION LOG:</p>
+                  <div>
+                        <pre style="color:red;">{{ out.output|safe }}</pre>
+                  </div>  
+            {% else %}
+                  <h1>Output:</h1>
+                  <pre>{{ out.output|safe }}</pre>
+            {% endif %}
+            <hr/>
+            {% if method == 1 %}
+                  <table class="table table-striped">
+                        <thead>
+                              <tr>
+                                    <th class="thead">Time</th>
+                                    <th class="thead">Memory</th>
+                                    <th class="thead">Status</th>
+                                    <th class="thead">Status Detail</th>
+                              </tr>
+                        </thead>
+                        <tbody>
+                              <tr>
+                                    <td class="thead">{{ out.time }}</td>
+                                    <td class="thead">{{ out.memory }}</td>
+                                    <td class="thead">{{ out.status }}</td>
+                                    <td class="thead">{{ out.status_detail }}</td>
+
+                              </tr>
+                        </tbody>
+                  </table>
+            {% endif %}
+      </div>
+</div>
+</body>
+</html>
